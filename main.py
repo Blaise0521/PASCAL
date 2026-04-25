@@ -13,14 +13,22 @@ def close_widgets(widgets):
         i.destroy()
 
 def schedule(times):
-    screen_width = root.winfo_screenwidth()
-    col_offset = screen_width // (int(times[6])-int(times[4]))
-    
+    canvas = tk.Canvas(root, width=900, height=600, bg="#260F26")
+    canvas.pack()
+    screen_width = root.winfo_width()
+    columns = (int(times[6])-int(times[4])+1)
+    col_offset = screen_width // columns
     for i in range(int(times[4]), int(times[6])+1):
-        time_label = tk.Label(root, text=f"{i}")
-        time_label.grid(row=0, column=i*col_offset)
-
-    school = tk.Canvas(root, )
+        time_label = tk.Label(root, text=f"{i}", bg="#260F26")
+        time_label.place(x=(i-int(times[4]))*col_offset, y=0)
+        
+        
+    top_left_x = (int(times[0])-int(times[4]))*col_offset
+    bottom_right_x = (int(times[2])-int(times[4]))*col_offset
+    school = canvas.create_rectangle(top_left_x, 50, bottom_right_x, 100, fill="#404E7C")
+    
+    school_label = tk.Label(root, text="In School", bg="#404E7C")
+    school_label.place(x=top_left_x, y=50)
 
 def get_school_time():
     widgets = []
@@ -126,6 +134,7 @@ def get_school_time():
 root = tk.Tk()
 root.title("Assignment Tracker")
 root.geometry("900x600")
+root.configure(bg='#260F26') 
 root.resizable(False, False)
 
 school_widgets = get_school_time()
