@@ -1,34 +1,51 @@
 import tkinter as tk
+from form import Assignment
 
 def submit_school(school_widgets, time_widgets):
     times = [i.get() for i in time_widgets]
     
     close_widgets(school_widgets)
     schedule(times)
-  
+    
+    
   
   
 def close_widgets(widgets):
     for i in widgets:
         i.destroy()
 
+def new_assignment():
+    ass = Assignment()
+    
+    print(ass.date)
+    print(ass.time)
+    print(ass.title)
+
 def schedule(times):
+    
     canvas = tk.Canvas(root, width=900, height=600, bg="#260F26")
     canvas.pack()
     screen_width = root.winfo_width()
     columns = (int(times[6])-int(times[4])+1)
     col_offset = screen_width // columns
+    
+    
+    button = tk.Button(root, text="Add Assignment", command=new_assignment)
+    button.place(x=screen_width/2, y=0)
+    
+    
     for i in range(int(times[4]), int(times[6])+1):
         time_label = tk.Label(root, text=f"{i}", bg="#260F26")
-        time_label.place(x=(i-int(times[4]))*col_offset, y=0)
+        time_label.place(x=(i-int(times[4]))*col_offset, y=50)
         
         
     top_left_x = (int(times[0])-int(times[4]))*col_offset
     bottom_right_x = (int(times[2])-int(times[4]))*col_offset
-    school = canvas.create_rectangle(top_left_x, 50, bottom_right_x, 100, fill="#404E7C")
+    school = canvas.create_rectangle(top_left_x, 100, bottom_right_x, 150, fill="#404E7C")
     
     school_label = tk.Label(root, text="In School", bg="#404E7C")
-    school_label.place(x=top_left_x, y=50)
+    school_label.place(x=top_left_x, y=100)
+    
 
 def get_school_time():
     widgets = []
@@ -123,10 +140,6 @@ def get_school_time():
     submit_button = tk.Button(root, text="Submit", command= lambda: submit_school(widgets, time_widgets))
     submit_button.grid(row=10, column=0)
     widgets.append(submit_button)
-    
-    
-    
-    
     
     
     return widgets
