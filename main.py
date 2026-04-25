@@ -14,11 +14,11 @@ def close_widgets(widgets):
 
 def schedule(times):
     screen_width = root.winfo_screenwidth()
-    col_offset = screen_width // (int(times[6])-int(times[4]))
+    col_offset = screen_width // (int(times[6])-int(times[4])+2)
     
     for i in range(int(times[4]), int(times[6])+1):
         time_label = tk.Label(root, text=f"{i}")
-        time_label.grid(row=0, column=i*col_offset)
+        time_label.place(x=i*col_offset, y=0)
 
     school = tk.Canvas(root, )
 
