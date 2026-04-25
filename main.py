@@ -1,15 +1,30 @@
 import tkinter as tk
 
 def submit_school(school_widgets, time_widgets):
-  close_widgets(school_widgets)
+    times = [i.get() for i in time_widgets]
+    
+    close_widgets(school_widgets)
+    schedule(times)
+  
+  
   
 def close_widgets(widgets):
     for i in widgets:
         i.destroy()
 
-def get_school_time(root):
+def schedule(times):
+    screen_width = root.winfo_screenwidth()
+    col_offset = screen_width // (int(times[6])-int(times[4]))
+    
+    for i in range(int(times[4]), int(times[6])+1):
+        time_label = tk.Label(root, text=f"{i}")
+        time_label.grid(row=0, column=i*col_offset)
+
+    school = tk.Canvas(root, )
+
+def get_school_time():
     widgets = []
-    time_widgets = [] # <- School Start: Hour, Minute; School End: Hour, Minute; Sleep Wake Up: Hour, Minute; Sleep Fall Asleep: Hour, Minute;
+    time_widgets = [] # <- School Start(0, 1): Hour, Minute; School End(2,3): Hour, Minute; Sleep Wake Up(4,5): Hour, Minute; Sleep Fall Asleep(6,7): Hour, Minute;
     
     # WIDGETS FOR SCHOOL
     school_label = tk.Label(root, text="Enter schools hours: ")
@@ -20,7 +35,7 @@ def get_school_time(root):
     start_label.grid(row=1, column=0)
     widgets.append(start_label)
     
-    start_hour_inp = tk.Spinbox(root, from_=1, to=12, wrap=True, width=2)
+    start_hour_inp = tk.Spinbox(root, from_=1, to=24, wrap=True, width=2)
     start_hour_inp.grid(row=1, column=1)
     widgets.append(start_hour_inp)
     time_widgets.append(start_hour_inp)
@@ -38,7 +53,7 @@ def get_school_time(root):
     end_label.grid(row=2, column=0)
     widgets.append(end_label)
     
-    end_hour_inp = tk.Spinbox(root, from_=1, to=12, wrap=True, width=2)
+    end_hour_inp = tk.Spinbox(root, from_=1, to=24, wrap=True, width=2)
     end_hour_inp.grid(row=2, column=1)
     widgets.append(end_hour_inp)
     time_widgets.append(end_hour_inp)
@@ -63,7 +78,7 @@ def get_school_time(root):
     wake_up_label.grid(row=4, column=0)
     widgets.append(wake_up_label)
     
-    wake_up_hour_inp = tk.Spinbox(root, from_=1, to=12, wrap=True, width=2)
+    wake_up_hour_inp = tk.Spinbox(root, from_=1, to=24, wrap=True, width=2)
     wake_up_hour_inp.grid(row=4, column=1)
     widgets.append(wake_up_hour_inp)
     time_widgets.append(wake_up_hour_inp)
@@ -82,7 +97,7 @@ def get_school_time(root):
     to_bed_label.grid(row=5, column=0)
     widgets.append(to_bed_label)
     
-    to_bed_hour_inp = tk.Spinbox(root, from_=1, to=12, wrap=True, width=2)
+    to_bed_hour_inp = tk.Spinbox(root, from_=1, to=24, wrap=True, width=2)
     to_bed_hour_inp.grid(row=5, column=1)
     widgets.append(to_bed_hour_inp)
     time_widgets.append(to_bed_hour_inp)
@@ -110,9 +125,9 @@ def get_school_time(root):
 
 root = tk.Tk()
 root.title("Assignment Tracker")
-root.geometry("520x420")
+root.geometry("900x600")
 root.resizable(False, False)
 
-school_widgets = get_school_time(root)
+school_widgets = get_school_time()
 
 root.mainloop()
