@@ -1,5 +1,9 @@
 import tkinter as tk
+from datetime import date
 from form import Assignment
+
+assignments = []
+ass_widgets = []
 
 def submit_school(school_widgets, time_widgets):
     times = [i.get() for i in time_widgets]
@@ -8,7 +12,23 @@ def submit_school(school_widgets, time_widgets):
     schedule(times)
     
     
-  
+def sort_asses():
+    sorted = []
+    
+    for i in assignments:
+        today = date.today()
+        day_str = int(str(today)[8:10])
+        
+        for index, j in enumerate(sorted):
+            if j.time * 0.6 + ((int(j.date[3:5]) - day_str) * 0.8) < i.time * 0.6 + ((int(i.date[3:5]) - day_str) * 0.8):
+                sorted = sorted[:index] + [i] + sorted[index:]
+                break
+    
+    return sorted
+
+def draw_asses():
+    global ass_widgets
+
   
 def close_widgets(widgets):
     for i in widgets:
@@ -17,12 +37,18 @@ def close_widgets(widgets):
 def new_assignment():
     ass = Assignment()
     
-    print(ass.date)
-    print(ass.time)
-    print(ass.title)
+    global assignments
+    
+    assignments.append(ass)
+
+    schedule()
+    
 
 def schedule(times):
     
+    for i in ass_widgets:
+        canvas.delete(i)
+
     canvas = tk.Canvas(root, width=900, height=600, bg="#260F26")
     canvas.pack()
     screen_width = root.winfo_width()
@@ -45,6 +71,14 @@ def schedule(times):
     
     school_label = tk.Label(root, text="In School", bg="#404E7C")
     school_label.place(x=top_left_x, y=100)
+
+    last_pos = (int(times[0])-int(times[4]))*col_offset
+    for i in sorted(assignments):
+        top_left_x = last_pos
+        bottom_right_x = last_pos + int(i.time[:2])
+        last_pos =last_pos + int(i.time[:2])
+        assignment = canvas.create_rectangle(top_left_x, 100, bottom_right_x, 150, fill="#404E7C")
+        ass_widgets.append(assignment)
     
 
 def get_school_time():
