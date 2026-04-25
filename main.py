@@ -13,14 +13,22 @@ def close_widgets(widgets):
         i.destroy()
 
 def schedule(times):
-    screen_width = root.winfo_screenwidth()
-    col_offset = screen_width // (int(times[6])-int(times[4])+2)
-    
+    canvas = tk.Canvas(root, width=900, height=600, bg="white")
+    canvas.pack()
+    screen_width = root.winfo_width()
+    columns = (int(times[6])-int(times[4])+1)
+    col_offset = screen_width // columns
     for i in range(int(times[4]), int(times[6])+1):
         time_label = tk.Label(root, text=f"{i}")
-        time_label.place(x=i*col_offset, y=0)
-
-    school = tk.Canvas(root, )
+        time_label.place(x=(i-int(times[4]))*col_offset, y=0)
+        
+        
+    top_left_x = (int(times[0])-int(times[4]))*col_offset
+    bottom_right_x = (int(times[2])-int(times[4]))*col_offset
+    school = canvas.create_rectangle(top_left_x, 50, bottom_right_x, 100, fill="yellow")
+    
+    school_label = tk.Label(root, text="In School")
+    school_label.place(x=top_left_x, y=50)
 
 def get_school_time():
     widgets = []
